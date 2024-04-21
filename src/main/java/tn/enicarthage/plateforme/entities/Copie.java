@@ -27,7 +27,7 @@ public class Copie implements Serializable   {
 	@EmbeddedId
 	CopieCP idCopie;
 	float note;
-
+	Boolean demandeDoubleCorrection = false;
 	@ManyToOne
 	@JoinColumn(name = "idEtudiant" ,insertable = false,updatable = false)
 	Etudiant etd;
