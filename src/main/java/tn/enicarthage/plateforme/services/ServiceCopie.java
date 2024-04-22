@@ -10,6 +10,9 @@ import tn.enicarthage.plateforme.entities.Etudiant;
 import tn.enicarthage.plateforme.repositories.CopieRepository;
 import tn.enicarthage.plateforme.repositories.EtudiantRepository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class ServiceCopie implements IServiceCopie {
 	
@@ -50,7 +53,18 @@ public class ServiceCopie implements IServiceCopie {
 			copie.setNote(note);
 			copieRepository.save(copie);
 		}
-		
 	}
 
+	@Override
+	public List<Copie> getAllCopies(){
+		List<Copie> result = copieRepository.findAll();
+		return result ;
+	}
+	public List<Copie> getCopiesByEtudiant(int id){
+		List<Copie> result = copieRepository.findByEtdIdUtilisateur(id);
+		return result ;
+	}
+	public List<Copie> findCopiesByEtudiantIdAndDateRange(int idEtudiant, LocalDate startDate, LocalDate endDate) {
+		return copieRepository.findByEtdIdUtilisateurAndDateCopieBetween(idEtudiant, startDate, endDate);
+	}
 }

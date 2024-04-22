@@ -1,7 +1,9 @@
 package tn.enicarthage.plateforme.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -35,6 +37,7 @@ public class Copie implements Serializable   {
 	@ManyToOne
 	@JoinColumn(name = "idEtudiant" ,insertable = false,updatable = false)
 	Matiere mat;
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateCopie;
 
 }
