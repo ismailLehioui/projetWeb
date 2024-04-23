@@ -29,6 +29,7 @@ public class Paquet implements Serializable  {
 	@OneToOne
 	Salle salle;
 	//Set<Enseignant> surveillant;
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	Matiere examen;
 

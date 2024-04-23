@@ -33,7 +33,6 @@ public class Copie implements Serializable   {
 	@ManyToOne
 	@JoinColumn(name = "idEtudiant" ,insertable = false,updatable = false)
 	Etudiant etd;
-
 	@ManyToOne
 	@JoinColumn(name = "idEtudiant" ,insertable = false,updatable = false)
 	Matiere mat;

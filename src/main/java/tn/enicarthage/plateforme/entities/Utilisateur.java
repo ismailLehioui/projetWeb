@@ -29,12 +29,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @EqualsAndHashCode
 public abstract class Utilisateur implements Serializable   {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int idUtilisateur;
 	String nom;
 	String prenom;
 	long numTel;
-
 }
