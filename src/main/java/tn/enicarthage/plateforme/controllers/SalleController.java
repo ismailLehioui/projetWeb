@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.entities.Salle;
+import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
+import tn.enicarthage.plateforme.repositories.SalleRepository;
 import tn.enicarthage.plateforme.services.IServicePaquet;
 import tn.enicarthage.plateforme.services.IServiceSalle;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -31,8 +34,13 @@ public class SalleController {
     }
 
     @GetMapping("/get-salle-by-id/{id}")
-    public Optional<Salle> getSallebyId(@PathVariable("id") int id){
-        return serviceSalle.getSalleById(id);
+    public ResponseEntity<Salle> getSallebyId(@PathVariable("id") int id){
+        // sans exception
+        /*public Optional<Salle> getSallebyId(@PathVariable("id") int id){
+        //return serviceSalle.getSalleById(id);}*/
+        Salle salle= serviceSalle.getSalleById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Salle not exist with id :" + id));
+        return ResponseEntity.ok(salle);
     }
 
     @PostMapping("/add-salle")
@@ -44,26 +52,28 @@ public class SalleController {
     @PutMapping("/update-salle/{id}")
     public ResponseEntity<?> updateSalle(@RequestBody Salle salle,@PathVariable("id") Integer id){
 
-        if(serviceSalle.existById(id)){
-            Salle salle1= serviceSalle.getSalleById(id).
-                    orElseThrow
-                            (
-                                    ()->new EntityNotFoundException("requested salle not found")
-                            );
-            salle1.setNumSalle(salle.getNumSalle());
-            salle1.setNbPlaces(salle.getNbPlaces());
-            serviceSalle.addSalle(salle1);
-            return ResponseEntity.ok().body(salle1);
-        }else {
-            HashMap<String,String> message= new HashMap<>();
-            message.put("message","salle avec id "+id+" not found or matched .");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+            Salle salleToUpdate= serviceSalle.getSalleById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Salle not exist with id :" + id));
+
+            salleToUpdate.setNumSalle(salle.getNumSalle());
+            salleToUpdate.setNbPlaces(salle.getNbPlaces());
+            serviceSalle.addSalle(salleToUpdate);
+            return ResponseEntity.ok().body(salleToUpdate);
     }
+
 
 
     @DeleteMapping("/delete-salle/{id}")
     public ResponseEntity<?> deleteSalle(@PathVariable("id") int id){
+
+        serviceSalle.getSalleById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Salle not exist with id :" + id));
+        serviceSalle.removeSalle(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message","salle avec id "+id+" supprimée avec succès .");
+        return ResponseEntity.ok(response);
+
+        /*     sans exception
 
         if(serviceSalle.existById(id)){
             serviceSalle.removeSalle(id);
@@ -75,6 +85,6 @@ public class SalleController {
             HashMap<String,String> message= new HashMap<>();
             message.put("message","salle avec id "+id+" not found or matched .");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        }*/
     }
 }

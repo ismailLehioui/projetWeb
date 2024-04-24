@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.plateforme.entities.Enseignant;
+import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
+import tn.enicarthage.plateforme.repositories.EnseignantRepository;
 import tn.enicarthage.plateforme.services.IServiceEnseignant;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +25,7 @@ public class EnseignantController {
 
     @Autowired
     private IServiceEnseignant serviceEnseignant;
+
 
     @PutMapping("/affecter-paquet/{idPack}/{idEns}")
     public void afecterPaquetAuEnseignant
@@ -35,9 +39,10 @@ public class EnseignantController {
     }
 
     @GetMapping("/get-enseignant-by-id/{id}")
-    public Optional<Enseignant> getEnseignantById(@PathVariable("id") int id) {
-        return serviceEnseignant.getEnseignantById(id);
-        //.orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
+    public ResponseEntity<Enseignant> getEnseignantById(@PathVariable("id") int id) {
+        Enseignant enseignant= serviceEnseignant.getEnseignantById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Enseignat with id " + id + " not found"));
+        return ResponseEntity.ok(enseignant);
     }
 
     @PostMapping("/add-enseignant")
@@ -69,9 +74,18 @@ public class EnseignantController {
         }
     }
 
+    private EnseignantRepository enseignantRepository;
+
     @DeleteMapping("/delete-enseignant/{id}")
     public ResponseEntity<?> deleteEnseignant(@PathVariable("id") int id) {
-        if (serviceEnseignant.existById(id)) {
+        serviceEnseignant.getEnseignantById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Enseignant not exist with id :" + id));
+            serviceEnseignant.removeEnseignant(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message","enseignant avec id "+id+" supprimée avec succès .");
+            return ResponseEntity.ok(response);
+
+        /*if (serviceEnseignant.existById(id)) {
             serviceEnseignant.removeEnseignant(id);
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Enseignant with id " + id + " deleted successfully.");
@@ -80,6 +94,6 @@ public class EnseignantController {
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Enseignant with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        }*/
     }
 }

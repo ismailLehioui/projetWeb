@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.plateforme.entities.Departement;
 import tn.enicarthage.plateforme.entities.Enseignant;
+import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
+import tn.enicarthage.plateforme.repositories.DepartementRepository;
 import tn.enicarthage.plateforme.services.IServiceDepartement;
 import tn.enicarthage.plateforme.services.IServiceEnseignant;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,8 +38,10 @@ public class DepartementController {
     }
 
     @GetMapping("/get-departement-by-id/{id}")
-    public Optional<Departement> getDepartementById(@PathVariable("id") int id) {
-        return serviceDepartement.getDepartementById(id);
+    public ResponseEntity<Departement> getDepartementById(@PathVariable("id") int id) {
+        Departement departement= serviceDepartement.getDepartementById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Departement with id " + id + " not found"));
+        return ResponseEntity.ok(departement);
     }
 
     @PostMapping("/add-departement")
@@ -61,10 +66,18 @@ public class DepartementController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
     }
-
+    private DepartementRepository departementRepository;
     @DeleteMapping("/delete-departement/{id}")
     public ResponseEntity<?> deleteDepartement(@PathVariable("id") int id) {
-        if (serviceDepartement.existById(id)) {
+
+        Departement departement = serviceDepartement.getDepartementById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Departement not exist with id :" + id));
+            departementRepository.delete(departement);
+            Map<String, String> response = new HashMap<>();
+            response.put("message","Departement avec id "+id+" supprimée avec succès .");
+            return ResponseEntity.ok(response);
+
+        /*if (serviceDepartement.existById(id)) {
             serviceDepartement.removeDepartement(id);
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Departement with id " + id + " deleted successfully.");
@@ -73,7 +86,7 @@ public class DepartementController {
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Departement with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        }*/
     }
 
 

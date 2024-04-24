@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.plateforme.entities.Enseignant;
 import tn.enicarthage.plateforme.entities.Matiere;
+import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
+import tn.enicarthage.plateforme.repositories.MatiereRepository;
 import tn.enicarthage.plateforme.services.IServiceEnseignant;
 import tn.enicarthage.plateforme.services.IServiceMatiere;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -24,7 +27,6 @@ import java.util.Optional;
 public class MatiereController {
     @Autowired
     private IServiceMatiere serviceMatiere;
-
     @PutMapping("/affecter-paquet/{idPack}/{idMat}")
     public void afecterPaquetAMatiere
             (@PathVariable("idPack") int idPack , @PathVariable("idMat") int idMat){
@@ -37,9 +39,10 @@ public class MatiereController {
     }
 
     @GetMapping("/get-matiere-by-id/{id}")
-    public Optional<Matiere> getMatiereById(@PathVariable("id") int id) {
-        return serviceMatiere.getMatiereById(id);
-        //.orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
+    public ResponseEntity<Matiere> getMatiereById(@PathVariable("id") int id) {
+        Matiere matiere= serviceMatiere.getMatiereById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Matiere with id " + id + " not found"));
+        return ResponseEntity.ok(matiere);
     }
 
     @PostMapping("/add-matiere")
@@ -71,7 +74,16 @@ public class MatiereController {
 
     @DeleteMapping("/delete-matiere/{id}")
     public ResponseEntity<?> deleteMatiere(@PathVariable("id") int id) {
-        if (serviceMatiere.existById(id)) {
+
+            serviceMatiere.getMatiereById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Matiere not exist with id :" + id));
+            serviceMatiere.removeMatiere(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message","matière avec id "+id+" supprimée avec succès .");
+            return ResponseEntity.ok(response);
+
+
+        /*if (serviceMatiere.existById(id)) {
             serviceMatiere.removeMatiere(id);
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Matiere with id " + id + " deleted successfully.");
@@ -80,6 +92,6 @@ public class MatiereController {
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Matiere with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        }*/
     }
 }
