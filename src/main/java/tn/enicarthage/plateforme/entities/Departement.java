@@ -22,7 +22,7 @@ import tn.enicarthage.plateforme.enums.Filiere;
 @Setter
 @ToString
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
 public class Departement implements Serializable  {
 
 	@Id
@@ -30,10 +30,9 @@ public class Departement implements Serializable  {
 	int idDepartement;
 	@Enumerated(EnumType.STRING)
 	Filiere nomDepartement;
-	//@JsonIgnore
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "departement")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	Set<Enseignant> enseignant ;
-
 
 }

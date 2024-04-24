@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
 
 public class Matiere implements Serializable   {
 
@@ -40,6 +40,5 @@ public class Matiere implements Serializable   {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	Set<Paquet> paquets;
-
 
 }

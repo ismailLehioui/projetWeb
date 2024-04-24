@@ -23,7 +23,6 @@ import java.util.Optional;
 public class DepartementController {
     @Autowired
     private IServiceDepartement serviceDepartement;
-
     @PutMapping("/affecter-enseignant/{idEns}/{idDep}")
     public void afecterEnseignantADepartement
             (@PathVariable("idEns") int idEns , @PathVariable("idDep") int  idDep){

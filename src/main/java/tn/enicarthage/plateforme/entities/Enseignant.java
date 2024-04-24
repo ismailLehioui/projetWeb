@@ -14,7 +14,7 @@ import tn.enicarthage.plateforme.enums.Role;
 @Entity
 @Data
 @DiscriminatorValue("PROF")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
 public class Enseignant extends Utilisateur implements Serializable  {
 
 	String email;
