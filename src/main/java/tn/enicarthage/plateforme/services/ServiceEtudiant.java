@@ -46,9 +46,4 @@ public class ServiceEtudiant implements IServiceEtudiant{
         return etudiantRepository.existsById(id);
     }
 
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c41e54dafb549042b0641432c01b6cf14f4b3d40

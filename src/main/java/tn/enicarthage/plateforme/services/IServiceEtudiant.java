@@ -20,8 +20,5 @@ public interface IServiceEtudiant {
     public Optional<Etudiant> getEtudiantById(int id);
 
     public boolean existById(int id);
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> c41e54dafb549042b0641432c01b6cf14f4b3d40
