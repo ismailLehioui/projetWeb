@@ -9,15 +9,14 @@ import tn.enicarthage.plateforme.entities.CopieCP;
 import tn.enicarthage.plateforme.entities.Etudiant;
 import tn.enicarthage.plateforme.repositories.CopieRepository;
 import tn.enicarthage.plateforme.repositories.EtudiantRepository;
+import tn.enicarthage.plateforme.repositories.PaquetRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceCopie implements IServiceCopie {
-	
-	@Autowired
-	CopieRepository copieRepository;
 	@Autowired
 	EtudiantRepository etudiantRepository;
 
@@ -50,15 +49,9 @@ public class ServiceCopie implements IServiceCopie {
 		
 		Copie copie = copieRepository.findByIdCopie(idCopie);
 		if(copie!=null) {
-			copie.setNote(note);
+			copie.setNoteInitiale(note);
 			copieRepository.save(copie);
 		}
-	}
-
-	@Override
-	public List<Copie> getAllCopies(){
-		List<Copie> result = copieRepository.findAll();
-		return result ;
 	}
 	public List<Copie> getCopiesByEtudiant(int id){
 		List<Copie> result = copieRepository.findByEtdIdUtilisateur(id);
@@ -67,4 +60,41 @@ public class ServiceCopie implements IServiceCopie {
 	public List<Copie> findCopiesByEtudiantIdAndDateRange(int idEtudiant, LocalDate startDate, LocalDate endDate) {
 		return copieRepository.findByEtdIdUtilisateurAndDateCopieBetween(idEtudiant, startDate, endDate);
 	}
+
+	@Override
+	public List<Copie> getCopiesForPaquet(int paquetId) {
+		return copieRepository.findByPaquetId(paquetId);
+}
+	@Autowired
+    private CopieRepository copieRepository;
+    @Autowired
+    private PaquetRepository paquetRepository;
+    @Override
+    public Copie créerCopie(Copie copie) {
+        return copieRepository.save(copie);
+    }
+
+    @Override
+    public List<Copie> getAllCopies() {
+        return copieRepository.findAll();
+    }
+
+    @Override
+    public Optional<Copie> getCopiesByPaquet(int id_paquet) {
+        return paquetRepository.findByIdPaquet(id_paquet);
+    }
+
+    @Override
+    public Copie verifierCopie(CopieCP idCop,float note) {
+        Copie optionalCopie = copieRepository.findByIdCopie(idCop);
+        optionalCopie.setNoteVerifProf(note);
+        if(optionalCopie.getNoteInitiale()!=note)
+        	optionalCopie.setFaute(true);
+        else 
+        	optionalCopie.setFaute(false);
+        return optionalCopie;
+        }
+    
+    
+  
 }

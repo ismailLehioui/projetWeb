@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import tn.enicarthage.plateforme.entities.CopieCP;
 import tn.enicarthage.plateforme.entities.Enseignant;
+import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
 import tn.enicarthage.plateforme.repositories.EnseignantRepository;
 import tn.enicarthage.plateforme.services.IServiceEnseignant;
@@ -23,11 +26,11 @@ import java.util.Optional;
 
 public class EnseignantController {
 
-    @Autowired
+
+
     private IServiceEnseignant serviceEnseignant;
 
-
-    @PutMapping("/affecter-paquet/{idPack}/{idEns}")
+	@PutMapping("/affecter-paquet/{idPack}/{idEns}")
     public void afecterPaquetAuEnseignant
             (@PathVariable("idPack") int idPack , @PathVariable("idEns") int idEns){
         serviceEnseignant.afecterPaquetAuEnseignant(idPack,idEns);
@@ -39,10 +42,9 @@ public class EnseignantController {
     }
 
     @GetMapping("/get-enseignant-by-id/{id}")
-    public ResponseEntity<Enseignant> getEnseignantById(@PathVariable("id") int id) {
-        Enseignant enseignant= serviceEnseignant.getEnseignantById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Enseignat with id " + id + " not found"));
-        return ResponseEntity.ok(enseignant);
+    public Optional<Enseignant> getEnseignantById(@PathVariable("id") int id) {
+        Optional<Enseignant> enseignant= serviceEnseignant.getEnseignantById(id);
+        return enseignant;
     }
 
     @PostMapping("/add-enseignant")
@@ -51,11 +53,10 @@ public class EnseignantController {
     }
 
     @PutMapping("/update-enseignant/{id}")
-    public ResponseEntity<?> updateEnseignant(@RequestBody Enseignant enseignant, @PathVariable("id") Integer id) {
+    /*public void updateEnseignant(@RequestBody Enseignant enseignant, @PathVariable("id") Integer id) {
         if (serviceEnseignant.existById(id)) {
-            Enseignant enseignantToUpdate = serviceEnseignant.getEnseignantById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Enseignant with id " + id + " not found"));
-
+            Optional<Enseignant> enseignantToUpdate = serviceEnseignant.getEnseignantById(id);
+              
             enseignantToUpdate.setIdUtilisateur(enseignant.getIdUtilisateur());
             enseignantToUpdate.setNom(enseignant.getNom());
             enseignantToUpdate.setPrenom(enseignant.getPrenom());
@@ -65,25 +66,16 @@ public class EnseignantController {
             enseignantToUpdate.setRole(enseignant.getRole());
             enseignantToUpdate.setPaquets(enseignant.getPaquets());
 
-            serviceEnseignant.addEnseignant(enseignantToUpdate);
-            return ResponseEntity.ok().body(enseignantToUpdate);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-    }
-
-    private EnseignantRepository enseignantRepository;
+            serviceEnseignant.addEnseignant(enseignantToUpdate);}
+        
+        }*/
+    
 
     @DeleteMapping("/delete-enseignant/{id}")
-    public ResponseEntity<?> deleteEnseignant(@PathVariable("id") int id) {
-        serviceEnseignant.getEnseignantById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Enseignant not exist with id :" + id));
+    public void deleteEnseignant(@PathVariable("id") int id) {
+        serviceEnseignant.getEnseignantById(id);
             serviceEnseignant.removeEnseignant(id);
-            Map<String, String> response = new HashMap<>();
-            response.put("message","enseignant avec id "+id+" supprimée avec succès .");
-            return ResponseEntity.ok(response);
+    }
 
         /*if (serviceEnseignant.existById(id)) {
             serviceEnseignant.removeEnseignant(id);
@@ -95,5 +87,38 @@ public class EnseignantController {
             message.put("message", "Enseignant with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }*/
+    
+    @PutMapping("/corriger-copie")
+    public ResponseEntity<String> corrigerCopie(@RequestParam CopieCP id_cop, @RequestParam float note) {
+    	serviceEnseignant.corrigerCopie(id_cop, note);
+        return ResponseEntity.ok("Copie corrigée par l'enseignant");
     }
+    @GetMapping("/verification")
+    public List<Paquet> getPaquetsAVerifier(@RequestParam int correcteurId) {
+        List<Paquet> paquets =serviceEnseignant.getPaquetsAVerifier(correcteurId);
+        return paquets;
+    }
+
+    @GetMapping("/all")
+    public List<Enseignant> getAllEnseignants() {
+        return serviceEnseignant.getAllEnseignants();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Enseignant> getEnseignantByIdUtilisateur(@PathVariable Long id) {
+        return serviceEnseignant.getEnseignantByIdUtilisateur(id);
+    }
+
+    @PostMapping("/creer")
+    public Enseignant créerEnseignant(@RequestBody Enseignant enseignant) {
+        Enseignant createdEnseignant = serviceEnseignant.créerEnseignant(enseignant);
+        return createdEnseignant;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEnseignant(@PathVariable Long id) {
+    	serviceEnseignant.deleteEnseignant(id);
+    }
+
+
 }

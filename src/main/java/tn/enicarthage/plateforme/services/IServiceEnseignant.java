@@ -1,6 +1,8 @@
 package tn.enicarthage.plateforme.services;
 
 import org.springframework.stereotype.Service;
+
+import tn.enicarthage.plateforme.entities.CopieCP;
 import tn.enicarthage.plateforme.entities.Enseignant;
 import tn.enicarthage.plateforme.entities.Paquet;
 
@@ -22,4 +24,13 @@ public interface IServiceEnseignant {
     public Optional<Enseignant> getEnseignantById(int id);
 
     public boolean existById(int id);
+    void  corrigerCopie(CopieCP idCop, float note);
+
+	List<Paquet> getPaquetsAVerifier(int correcteurId);
+	 List<Enseignant> getAllEnseignants();
+	    Optional<Enseignant> getEnseignantByIdUtilisateur(Long id);
+	    void deleteEnseignant(Long id);
+
+		Enseignant créerEnseignant(Enseignant enseignant);
+
 }

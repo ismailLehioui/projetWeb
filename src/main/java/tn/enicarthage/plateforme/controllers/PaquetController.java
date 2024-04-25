@@ -26,7 +26,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/packs")
 public class PaquetController {
-
     @Autowired
     private IServicePaquet servicePaquet;
 
@@ -36,10 +35,8 @@ public class PaquetController {
     }
 
     @GetMapping("/get-pack-by-id/{id}")
-    public ResponseEntity<Paquet> getPaquetById(@PathVariable("id") int id) {
-        Paquet paquet=servicePaquet.getPackById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
-        return ResponseEntity.ok(paquet);
+    public Optional<Paquet> getPaquetById(@PathVariable("id") int id) {
+        return servicePaquet.getPackByIdPaquet(id);
     }
 
     @PostMapping("/add-paquet")
@@ -47,45 +44,32 @@ public class PaquetController {
         return servicePaquet.addPack(p);
     }
 
-    @PutMapping("/update-paquet/{id}")
-    public ResponseEntity<?> updatePaquet(@RequestBody Paquet paquet, @PathVariable("id") Integer id) {
+    /*@PutMapping("/update-paquet/{id}")
+    public void updatePaquet(@RequestBody Paquet paquet, @PathVariable("id") Integer id) {
         if (servicePaquet.existById(id)) {
-            Paquet paquetToUpdate = servicePaquet.getPackById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
+            Optional<Paquet> paquetToUpdate = servicePaquet.getPackByIdPaquet(id);
 
             paquetToUpdate.setIdPaquet(paquet.getIdPaquet());
             paquetToUpdate.setSalle(paquet.getSalle());
             paquetToUpdate.setExamen(paquet.getExamen());
             paquetToUpdate.setCorrecteur(paquet.getCorrecteur());
             servicePaquet.addPack(paquetToUpdate);
-            return ResponseEntity.ok().body(paquetToUpdate);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-    }
+
+        } 
+        }*/
+    
 
     @DeleteMapping("/delete-paquet/{id}")
-        public ResponseEntity<?> deletePaquet(@PathVariable("id") int id){
-
-            servicePaquet.getPackById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Pack not exist with id :" + id));
-            servicePaquet.removePack(id);
-            Map<String, String> response = new HashMap<>();
-            response.put("message","paquet avec id "+id+" supprimée avec succès .");
-            return ResponseEntity.ok(response);
-
-            /*
+    public void deletePaquet(@PathVariable("id") int id) {
         if (servicePaquet.existById(id)) {
             servicePaquet.removePack(id);
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " deleted successfully.");
-            return ResponseEntity.ok().body(message);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }*/
+        } 
     }
+
+    @GetMapping("/a-verifier/{correcteurId}")
+    public Paquet getPaquetsAVerifier(@RequestParam int correcteurId) {
+        Paquet paquets = servicePaquet.getPaquetsAVerifier(correcteurId);
+        return paquets;
+    }
+
 }

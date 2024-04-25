@@ -14,4 +14,7 @@ public interface CopieRepository extends CrudRepository<Copie, Integer> {
 	List<Copie> findAll();
 	List<Copie> findByEtdIdUtilisateur(int idEtudiant);
 	List<Copie> findByEtdIdUtilisateurAndDateCopieBetween(int idEtudiant, LocalDate startDate, LocalDate endDate);
+	void deleteByIdCopie(CopieCP id_cop);
+    List<Copie> findByPaquetId(int paquetId);
+
 }
