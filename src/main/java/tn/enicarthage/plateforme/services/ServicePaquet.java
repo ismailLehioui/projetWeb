@@ -3,6 +3,8 @@ package tn.enicarthage.plateforme.services;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import tn.enicarthage.plateforme.entities.Copie;
 import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.repositories.PaquetRepository;
 
@@ -43,6 +45,23 @@ public class ServicePaquet implements IServicePaquet{
     public boolean existById(int id){
         return paquetRepository.existsById(id);
     }
+
+    @Override
+    public Optional<Paquet> getPackByIdPaquet(int id){
+        return paquetRepository.findById(id);
+    }
+
+
+	@Override
+	public Paquet getPaquetsAVerifier(int correcteurId) {
+	return paquetRepository.findByCorrecteurIdUtilisateur(correcteurId);
+	
+	}
+	@Override
+	public Optional<Copie> getCopieByIdPaquet(int id) {
+		
+		return  paquetRepository.findByIdPaquet( id);
+	}
 
 
 }

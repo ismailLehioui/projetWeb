@@ -5,6 +5,9 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,6 +39,7 @@ public class Etudiant implements Serializable  {
 	@Enumerated(EnumType.STRING)
 	Filiere filiere;
 	@OneToMany(mappedBy = "etd")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	Set<Copie> matieres ;
 	

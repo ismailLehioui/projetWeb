@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.plateforme.entities.Paquet;
+import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
+import tn.enicarthage.plateforme.repositories.PaquetRepository;
 import tn.enicarthage.plateforme.services.IServicePaquet;
-
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,7 +23,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/packs")
 public class PaquetController {
-
     @Autowired
     private IServicePaquet servicePaquet;
 
@@ -32,8 +33,7 @@ public class PaquetController {
 
     @GetMapping("/get-pack-by-id/{id}")
     public Optional<Paquet> getPaquetById(@PathVariable("id") int id) {
-        return servicePaquet.getPackById(id);
-                //.orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
+        return servicePaquet.getPackByIdPaquet(id);
     }
 
     @PostMapping("/add-paquet")
@@ -41,36 +41,32 @@ public class PaquetController {
         return servicePaquet.addPack(p);
     }
 
-    @PutMapping("/update-paquet/{id}")
-    public ResponseEntity<?> updatePaquet(@RequestBody Paquet paquet, @PathVariable("id") Integer id) {
+    /*@PutMapping("/update-paquet/{id}")
+    public void updatePaquet(@RequestBody Paquet paquet, @PathVariable("id") Integer id) {
         if (servicePaquet.existById(id)) {
-            Paquet paquetToUpdate = servicePaquet.getPackById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Paquet with id " + id + " not found"));
+            Optional<Paquet> paquetToUpdate = servicePaquet.getPackByIdPaquet(id);
 
             paquetToUpdate.setIdPaquet(paquet.getIdPaquet());
             paquetToUpdate.setSalle(paquet.getSalle());
             paquetToUpdate.setExamen(paquet.getExamen());
             paquetToUpdate.setCorrecteur(paquet.getCorrecteur());
             servicePaquet.addPack(paquetToUpdate);
-            return ResponseEntity.ok().body(paquetToUpdate);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-    }
+
+        } 
+        }*/
+    
 
     @DeleteMapping("/delete-paquet/{id}")
-    public ResponseEntity<?> deletePaquet(@PathVariable("id") int id) {
+    public void deletePaquet(@PathVariable("id") int id) {
         if (servicePaquet.existById(id)) {
             servicePaquet.removePack(id);
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " deleted successfully.");
-            return ResponseEntity.ok().body(message);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Paquet with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
+        } 
     }
+
+    @GetMapping("/a-verifier/{correcteurId}")
+    public Paquet getPaquetsAVerifier(@RequestParam int correcteurId) {
+        Paquet paquets = servicePaquet.getPaquetsAVerifier(correcteurId);
+        return paquets;
+    }
+
 }

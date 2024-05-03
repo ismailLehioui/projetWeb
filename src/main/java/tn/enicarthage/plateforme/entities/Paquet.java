@@ -1,7 +1,9 @@
 package tn.enicarthage.plateforme.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -32,7 +34,9 @@ public class Paquet implements Serializable  {
 	@OneToOne
 	Salle salle;
 	//Set<Enseignant> surveillant;
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	Matiere examen;
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateCopie;
 }
