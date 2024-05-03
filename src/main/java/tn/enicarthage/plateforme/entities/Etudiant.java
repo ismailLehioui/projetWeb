@@ -1,8 +1,11 @@
 package tn.enicarthage.plateforme.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -20,9 +23,15 @@ import tn.enicarthage.plateforme.enums.Niveau;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode
-@DiscriminatorValue("ETDT")
-public class Etudiant extends Utilisateur implements Serializable  {
+public class Etudiant implements Serializable  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
+	int id;
+	String name;
 	String classe;
 	@Enumerated(EnumType.STRING)
 	Niveau niveau;
@@ -30,6 +39,7 @@ public class Etudiant extends Utilisateur implements Serializable  {
 	@Enumerated(EnumType.STRING)
 	Filiere filiere;
 	@OneToMany(mappedBy = "etd")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	Set<Copie> matieres ;
 	

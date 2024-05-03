@@ -25,7 +25,7 @@ public class ServiceCopie implements IServiceCopie {
 		
 		Copie copie = copieRepository.findByIdCopie(idCopie);
 		if(copie!=null && !copie.getDemandeDoubleCorrection()) {
-			Etudiant etudiant = etudiantRepository.findById(idCopie.getIdEtudiant()).get();
+			Etudiant etudiant = etudiantRepository.findById((int) idCopie.getIdEtudiant()).get();
 			if(etudiant!=null) {
 				if(etudiant.getNombreDemandes()>0) {
 					copie.setDemandeDoubleCorrection(true);

@@ -1,5 +1,14 @@
 package tn.enicarthage.plateforme.services;
 
+import tn.enicarthage.plateforme.entities.Etudiant;
+
+public interface IServiceEtudiant {
+
+	Etudiant addEtudiant(Etudiant etudiant);
+	
+}
+package tn.enicarthage.plateforme.services;
+
 import org.springframework.stereotype.Service;
 import tn.enicarthage.plateforme.entities.Etudiant;
 import tn.enicarthage.plateforme.entities.Paquet;

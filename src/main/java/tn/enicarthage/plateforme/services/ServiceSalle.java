@@ -3,9 +3,7 @@ package tn.enicarthage.plateforme.services;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.entities.Salle;
-import tn.enicarthage.plateforme.repositories.PaquetRepository;
 import tn.enicarthage.plateforme.repositories.SalleRepository;
 
 import java.util.List;

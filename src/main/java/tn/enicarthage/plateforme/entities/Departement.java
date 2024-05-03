@@ -25,6 +25,10 @@ import tn.enicarthage.plateforme.enums.Filiere;
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDepartement")
 public class Departement implements Serializable  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int idDepartement;

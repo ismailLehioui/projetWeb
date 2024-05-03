@@ -1,17 +1,14 @@
 package tn.enicarthage.plateforme.controllers;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.entities.Salle;
 import tn.enicarthage.plateforme.exceptions.ResourceNotFoundException;
 import tn.enicarthage.plateforme.repositories.SalleRepository;
-import tn.enicarthage.plateforme.services.IServicePaquet;
 import tn.enicarthage.plateforme.services.IServiceSalle;
 import java.util.HashMap;
 import java.util.List;

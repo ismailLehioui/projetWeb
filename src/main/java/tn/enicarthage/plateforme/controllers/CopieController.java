@@ -1,6 +1,7 @@
 package tn.enicarthage.plateforme.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,11 @@ public class CopieController {
 	@ResponseBody
 	public int deposerDemandeDoubleCorrection(@RequestBody CopieCP idCopie) {
 		return serviceCopie.deposerDemandeDoubleCorrection(idCopie);
+	}
+	
+	@PostMapping("/corriger_copie/{nouvelleNote}")
+	public void corrigerCopie(@RequestBody CopieCP copieId, @PathVariable float nouvelleNote) {
+		serviceCopie.corrigerCopie(copieId, nouvelleNote);
 	}
 	@GetMapping("/Notes/{id}")
 		public List<Copie> getCopiesByEtudiant(@PathVariable Integer id){
@@ -68,7 +74,7 @@ public class CopieController {
 	    //saisir la note verif respo
 	    @PostMapping("/note/verifResp/{idcopie}")
 	    public void setNoteVerifResp(@PathVariable("idcopie") CopieCP idcopie, @RequestParam("verif") float verif) {
-	        serviceCopie.setNoteVerifResp(idcopie, verif);
+	       u serviceCopie.setNoteVerifResp(idcopie, verif);
 	    }
 	    //saisir la note initiale
 	    @PostMapping("/note/initiale/{idcopie}")

@@ -1,20 +1,21 @@
 package tn.enicarthage.plateforme.services;
 
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import tn.enicarthage.plateforme.entities.Copie;
 import tn.enicarthage.plateforme.entities.CopieCP;
 import tn.enicarthage.plateforme.entities.Enseignant;
 import tn.enicarthage.plateforme.entities.Matiere;
 import tn.enicarthage.plateforme.entities.Paquet;
+<<<<<<< HEAD
 import tn.enicarthage.plateforme.entities.Salle;
 import tn.enicarthage.plateforme.enums.Role;
 import tn.enicarthage.plateforme.repositories.EnseignantRepository;
 import tn.enicarthage.plateforme.repositories.MatiereRepository;
+=======
+>>>>>>> 53feeb44bfeec36130bebfc48d706dce379a1633
 import tn.enicarthage.plateforme.repositories.PaquetRepository;
 
 import java.util.List;

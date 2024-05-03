@@ -2,7 +2,6 @@ package tn.enicarthage.plateforme.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -23,6 +22,10 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Paquet implements Serializable  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int idPaquet;
