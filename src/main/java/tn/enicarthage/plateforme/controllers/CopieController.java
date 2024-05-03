@@ -26,41 +26,65 @@ public class CopieController {
 		return serviceCopie.deposerDemandeDoubleCorrection(idCopie);
 	}
 	@GetMapping("/Notes/{id}")
-		public List<Copie> getCopiesByEtudiant(@PathVariable int id){
+		public List<Copie> getCopiesByEtudiant(@PathVariable Integer id){
 			return serviceCopie.getCopiesByEtudiant(id);
 		}
 
-	@GetMapping("/NotesByDate/{id}")
-	public List<Copie> getCopiesByDate(@PathVariable int id , @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-									   @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
-		return serviceCopie.findCopiesByEtudiantIdAndDateRange(id, startDate, endDate);
-	}
-	 private final IServiceCopie IServiceCopie;
-	    @Autowired
-	    public CopieController(IServiceCopie IServiceCopie,IServicePaquet IServicePaquet) {
-	        this.IServiceCopie = IServiceCopie;
-	    }
-
 	    @PostMapping("/creer")
 	    public Copie créerCopie(@RequestBody Copie copie) {
-	        Copie createdCopie = IServiceCopie.créerCopie(copie);
+	        Copie createdCopie = serviceCopie.créerCopie(copie);
 	        return createdCopie;
 	    }
 	    @GetMapping("/toutes")
 	    public List<Copie> getAllCopies() {
-	        List<Copie> copies = IServiceCopie.getAllCopies();
+	        List<Copie> copies = serviceCopie.getAllCopies();
 	        return  copies;
 	    }
 	    @PostMapping("/{copieId}/verifier")
-	    public Copie verifierCopie(@PathVariable CopieCP idCop,float note) {
-	        Copie updatedCopie = IServiceCopie.verifierCopie(idCop,note);
-	        return updatedCopie;
+	    public void verifierCopie(@PathVariable CopieCP idCop,float note) {
+	        serviceCopie.corrigerCopie(idCop,note);
+	        
 	    }
-	    //  récupérer toutes les copies
-	    @GetMapping("/paquet/{paquetId}")
-	    public Optional<Copie> getCopiesForPaquet(@PathVariable int id_paquet) {
-	        Optional<Copie> copies = IServiceCopie.getCopiesByPaquet(id_paquet);
-	        return copies;
+	    //recuperer la note verif prof
+	    @GetMapping("/note/verifProf/{idcopie}")
+	    public float getNoteVerifProf(@PathVariable("idcopie") CopieCP idcopie) {
+	        return serviceCopie.getNoteVerifProf(idcopie);
+	    }
+        //recuperer la note verif resp
+	    @GetMapping("/note/verifResp/{idcopie}")
+	    public float getNoteVerifResp(@PathVariable("idcopie") CopieCP idcopie) {
+	        return serviceCopie.getNoteVerifResp(idcopie);
+	    }
+	    //recuperer la note initiale
+	    @GetMapping("/note/initiale/{idcopie}")
+	    public float getNoteInitiale(@PathVariable("idcopie") CopieCP idcopie) {
+	        return serviceCopie.getNoteInitiale(idcopie);
+	    }
+	    //saisir la note verif prof
+	    @PostMapping("/note/verifProf/{idcopie}")
+	    public void setNoteVerifProf(@PathVariable("idcopie") CopieCP idcopie, @RequestParam("verif") float verif) {
+	        serviceCopie.setNoteVerifProf(idcopie, verif);
+	    }
+	    //saisir la note verif respo
+	    @PostMapping("/note/verifResp/{idcopie}")
+	    public void setNoteVerifResp(@PathVariable("idcopie") CopieCP idcopie, @RequestParam("verif") float verif) {
+	        serviceCopie.setNoteVerifResp(idcopie, verif);
+	    }
+	    //saisir la note initiale
+	    @PostMapping("/note/initiale/{idcopie}")
+	    public void setNoteInitiale(@PathVariable("idcopie") CopieCP idcopie, @RequestParam("verif") float verif) {
+	        serviceCopie.setNoteInitiale(idcopie, verif);
+	    }
+	    //saisir la faute automatiquement
+	    @PostMapping("/faute/{idcopie}")
+	    public void setFaute(@PathVariable("idcopie") CopieCP idcopie) {
+	        serviceCopie.setFaute(idcopie);
+	    }
+	    //retourner la faute d'une copie
+	    @GetMapping("/faute/{idcopie}")
+	    public boolean getFaute(@PathVariable("idcopie") CopieCP idcopie) {
+	    	this.setFaute(idcopie);
+	        return serviceCopie.getFaute(idcopie);
 	    }
 
 }

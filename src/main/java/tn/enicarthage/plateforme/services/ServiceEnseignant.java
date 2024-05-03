@@ -15,6 +15,7 @@ import tn.enicarthage.plateforme.repositories.PaquetRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 //@AllArgsConstructor
@@ -53,8 +54,8 @@ public class ServiceEnseignant implements IServiceEnseignant{
         return p;
     }
     @Override
-    public Optional<Enseignant> getEnseignantById(int id){
-        return enseignantRepository.findById(id);
+    public Enseignant getEnseignantById(int id){
+        return enseignantRepository.findByIdUtilisateur(id);
     }
 
     @Override
@@ -71,22 +72,17 @@ public class ServiceEnseignant implements IServiceEnseignant{
 
         copieRepository.save(copie);
     }
+    //liste des paquets d'un enseignant bie determine
     @Override
-    public List<Paquet> getPaquetsAVerifier(int correcteurId) {
-        // Récupérer les paquets à vérifier par l'enseignant correcteur en fonction de son identifiant
-        return enseignantRepository.findByIdUtilisateur(correcteurId);
+    public Set<Paquet> getPaquetsAVerifier(int correcteurId) {
+        Enseignant ens=this.getEnseignantById(correcteurId);
+        return ens.getPaquets();
     }
     @Override
     public List<Enseignant> getAllEnseignants() {
         return enseignantRepository.findAll();
     }
-
-    @Override
-    public Optional<Enseignant> getEnseignantByIdUtilisateur(Long id) {
-        return enseignantRepository.findByIdUtilisateur(id);
-    }
-
-  
+ 
 
     @Override
     public void deleteEnseignant(Long id) {
@@ -96,6 +92,7 @@ public class ServiceEnseignant implements IServiceEnseignant{
 	public Enseignant créerEnseignant(Enseignant enseignant) {
 		return enseignantRepository.save(enseignant);
 	}
+
 
 
 

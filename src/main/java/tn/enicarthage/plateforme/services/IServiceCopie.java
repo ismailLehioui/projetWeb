@@ -10,14 +10,19 @@ import java.util.Optional;
 public interface IServiceCopie {
 
 	int deposerDemandeDoubleCorrection(CopieCP idCopie);
-	void corrigerCopie(CopieCP idCopie, float note);
 	List<Copie> getAllCopies();
 	List<Copie> getCopiesByEtudiant(int id);
-	List<Copie> findCopiesByEtudiantIdAndDateRange(int idEtudiant, LocalDate startDate, LocalDate endDate);
-    List<Copie> getCopiesForPaquet(int paquetId);
     Copie créerCopie(Copie copie);
-	Copie verifierCopie(CopieCP id_cop,float note);
-	Optional<Copie> getCopiesByPaquet(int id_paquet);
+	float getNoteVerifResp(CopieCP idcopie);
+	float getNoteInitiale(CopieCP idcopie);
+	float getNoteVerifProf(CopieCP idcopie);
+	void setNoteVerifProf(CopieCP idcopie, float verif);
+	void setNoteVerifResp(CopieCP idcopie, float verif);
+	void setNoteInitiale(CopieCP idcopie,float note);
+	void setFaute(CopieCP idcopie);
+	void corrigerCopie(CopieCP idCopie, float note);
+	boolean getFaute(CopieCP idcopie);
+	
 	
 
 

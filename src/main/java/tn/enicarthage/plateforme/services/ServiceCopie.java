@@ -57,14 +57,8 @@ public class ServiceCopie implements IServiceCopie {
 		List<Copie> result = copieRepository.findByEtdIdUtilisateur(id);
 		return result ;
 	}
-	public List<Copie> findCopiesByEtudiantIdAndDateRange(int idEtudiant, LocalDate startDate, LocalDate endDate) {
-		return copieRepository.findByEtdIdUtilisateurAndDateCopieBetween(idEtudiant, startDate, endDate);
-	}
 
-	@Override
-	public List<Copie> getCopiesForPaquet(int paquetId) {
-		return copieRepository.findByPaquetId(paquetId);
-}
+
 	@Autowired
     private CopieRepository copieRepository;
     @Autowired
@@ -78,23 +72,83 @@ public class ServiceCopie implements IServiceCopie {
     public List<Copie> getAllCopies() {
         return copieRepository.findAll();
     }
+    //prendre la note de verif prof
+   @Override 
+   public float getNoteVerifProf(CopieCP idcopie)
+   {
+		  Copie cop=copieRepository.findByIdCopie(idcopie);
+	   return cop.getNoteVerifProf();
+	   
+   }
+   //prendre la note de verif resp
+   @Override 
+   public float getNoteVerifResp(CopieCP idcopie)
+   {
+		  Copie cop=copieRepository.findByIdCopie(idcopie);
+	   return cop.getNoteVerifResp();
+	   
+   }
+   //prendre la note initiale
+   @Override 
+   public float getNoteInitiale(CopieCP idcopie)
+   {
+		  Copie cop=copieRepository.findByIdCopie(idcopie);
+	   return cop.getNoteInitiale();
+	   
+   }
+   
+   //mettre la note de verif prof
+  @Override 
+  public void setNoteVerifProf(CopieCP idcopie,float verif)
+  {
+	  Copie cop=copieRepository.findByIdCopie(idcopie);
+	    cop.setVerifP(true);
+	    cop.setNoteVerifProf(verif);
+	   
+  }
+ 
+   //mettre la note de verif responsable
+ @Override 
+ public void setNoteVerifResp(CopieCP idcopie,float verif)
+ {
+	  Copie cop=copieRepository.findByIdCopie(idcopie);
+	    cop.setVerifR(true);
+	    cop.setNoteVerifResp(verif);
+	   
+ }
+ //mettre la note initiale
+@Override 
+public void setNoteInitiale(CopieCP idcopie,float verif)
+{
+	  Copie cop=copieRepository.findByIdCopie(idcopie);
+	  cop.setNotI(true);
+	    cop.setNoteInitiale(verif);
+	   
+}
 
-    @Override
-    public Optional<Copie> getCopiesByPaquet(int id_paquet) {
-        return paquetRepository.findByIdPaquet(id_paquet);
-    }
+   //calculer la faute  
+   @Override
+   public void setFaute(CopieCP idcopie)
+   {
+		  Copie cop=copieRepository.findByIdCopie(idcopie);
 
-    @Override
-    public Copie verifierCopie(CopieCP idCop,float note) {
-        Copie optionalCopie = copieRepository.findByIdCopie(idCop);
-        optionalCopie.setNoteVerifProf(note);
-        if(optionalCopie.getNoteInitiale()!=note)
-        	optionalCopie.setFaute(true);
-        else 
-        	optionalCopie.setFaute(false);
-        return optionalCopie;
-        }
-    
-    
+	  boolean f=(this.getNoteInitiale(idcopie)==this.getNoteVerifProf(idcopie));
+     if(f==true)
+     {
+    	 f=this.getNoteInitiale(idcopie)==this.getNoteVerifResp(idcopie);
+    	 
+     }
+     cop.setFaute(f);
+	   
+   }
+   //retourne la faute
+   @Override
+   public boolean getFaute(CopieCP idcopie)
+   {
+		  Copie cop=copieRepository.findByIdCopie(idcopie);
+		  return cop.isFaute();
+
+	   
+   }
   
 }

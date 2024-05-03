@@ -8,6 +8,7 @@ import tn.enicarthage.plateforme.entities.Paquet;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 @Service
 
 public interface IServiceEnseignant {
@@ -21,14 +22,13 @@ public interface IServiceEnseignant {
 
     public Enseignant updateEnseignant(Enseignant p);
 
-    public Optional<Enseignant> getEnseignantById(int id);
+    public Enseignant getEnseignantById(int id);
 
     public boolean existById(int id);
     void  corrigerCopie(CopieCP idCop, float note);
 
-	List<Paquet> getPaquetsAVerifier(int correcteurId);
+	Set<Paquet> getPaquetsAVerifier(int correcteurId);
 	 List<Enseignant> getAllEnseignants();
-	    Optional<Enseignant> getEnseignantByIdUtilisateur(Long id);
 	    void deleteEnseignant(Long id);
 
 		Enseignant créerEnseignant(Enseignant enseignant);

@@ -6,7 +6,8 @@ import tn.enicarthage.plateforme.entities.Matiere;
 import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.repositories.MatiereRepository;
 import tn.enicarthage.plateforme.repositories.PaquetRepository;
-
+import java.util.Set;
+import tn.enicarthage.plateforme.entities.Copie;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,15 +44,20 @@ public class ServiceMatiere implements IServiceMatiere{
     public Matiere updateMatiere(Matiere p){
         return p;
     }
-    @Override
-    public Optional<Matiere> getMatiereById(int id){
-        return matiereRepository.findById(id);
-    }
-
+  
     @Override
     public boolean existById(int id){
         return matiereRepository.existsById(id);
     }
+    //retourner les copies d'une matiere bien  determine
+    @Override
+    public Set<Copie> getCopiesByIdMatiere(int idMatiere)
+    {
+    	
+    	return matiereRepository.getEtudiantsByIdMatiere(idMatiere);
+    	
+    }
+	
 
 
 

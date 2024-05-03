@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -25,8 +26,6 @@ import java.util.Optional;
 @RequestMapping("/enseignants")
 
 public class EnseignantController {
-
-
 
     private IServiceEnseignant serviceEnseignant;
 
@@ -42,8 +41,8 @@ public class EnseignantController {
     }
 
     @GetMapping("/get-enseignant-by-id/{id}")
-    public Optional<Enseignant> getEnseignantById(@PathVariable("id") int id) {
-        Optional<Enseignant> enseignant= serviceEnseignant.getEnseignantById(id);
+    public Enseignant getEnseignantById(@PathVariable("id") int id) {
+        Enseignant enseignant= serviceEnseignant.getEnseignantById(id);
         return enseignant;
     }
 
@@ -52,61 +51,23 @@ public class EnseignantController {
         return serviceEnseignant.addEnseignant(p);
     }
 
-    @PutMapping("/update-enseignant/{id}")
-    /*public void updateEnseignant(@RequestBody Enseignant enseignant, @PathVariable("id") Integer id) {
-        if (serviceEnseignant.existById(id)) {
-            Optional<Enseignant> enseignantToUpdate = serviceEnseignant.getEnseignantById(id);
-              
-            enseignantToUpdate.setIdUtilisateur(enseignant.getIdUtilisateur());
-            enseignantToUpdate.setNom(enseignant.getNom());
-            enseignantToUpdate.setPrenom(enseignant.getPrenom());
-            enseignantToUpdate.setNumTel(enseignant.getNumTel());
-            enseignantToUpdate.setEmail(enseignant.getEmail());
-            enseignantToUpdate.setMotDePasse(enseignant.getMotDePasse());
-            enseignantToUpdate.setRole(enseignant.getRole());
-            enseignantToUpdate.setPaquets(enseignant.getPaquets());
-
-            serviceEnseignant.addEnseignant(enseignantToUpdate);}
-        
-        }*/
-    
 
     @DeleteMapping("/delete-enseignant/{id}")
     public void deleteEnseignant(@PathVariable("id") int id) {
         serviceEnseignant.getEnseignantById(id);
             serviceEnseignant.removeEnseignant(id);
     }
-
-        /*if (serviceEnseignant.existById(id)) {
-            serviceEnseignant.removeEnseignant(id);
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Enseignant with id " + id + " deleted successfully.");
-            return ResponseEntity.ok().body(message);
-        } else {
-            HashMap<String, String> message = new HashMap<>();
-            message.put("message", "Enseignant with id " + id + " not found or matched.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }*/
     
-    @PutMapping("/corriger-copie")
-    public ResponseEntity<String> corrigerCopie(@RequestParam CopieCP id_cop, @RequestParam float note) {
+    @PutMapping("/corriger-copie/")
+    public void corrigerCopie(@RequestParam CopieCP id_cop, @RequestParam float note) {
     	serviceEnseignant.corrigerCopie(id_cop, note);
-        return ResponseEntity.ok("Copie corrigée par l'enseignant");
+        
     }
-    @GetMapping("/verification")
-    public List<Paquet> getPaquetsAVerifier(@RequestParam int correcteurId) {
-        List<Paquet> paquets =serviceEnseignant.getPaquetsAVerifier(correcteurId);
-        return paquets;
-    }
+  
 
     @GetMapping("/all")
     public List<Enseignant> getAllEnseignants() {
         return serviceEnseignant.getAllEnseignants();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Enseignant> getEnseignantByIdUtilisateur(@PathVariable Long id) {
-        return serviceEnseignant.getEnseignantByIdUtilisateur(id);
     }
 
     @PostMapping("/creer")
@@ -119,6 +80,12 @@ public class EnseignantController {
     public void deleteEnseignant(@PathVariable Long id) {
     	serviceEnseignant.deleteEnseignant(id);
     }
-
-
+    //les paquets a verifier par l'enseignant determine
+    @GetMapping("/verification/{id}")
+    public Set<Paquet> getPaquetsAVerifier(@PathVariable("id")int correcteurId) {
+        Set<Paquet> paquets =serviceEnseignant.getPaquetsAVerifier(correcteurId);
+        return paquets;
+    }
+    
+  
 }

@@ -28,10 +28,13 @@ public class Copie implements Serializable   {
 	private static final long serialVersionUID=1L;
 	@EmbeddedId
 	CopieCP idCopie;
-	int paquetId;
 	float noteInitiale;
 	float noteVerifProf;
-	boolean faute;
+	float noteVerifResp;
+	boolean notI=false;
+	boolean verifP=false;
+	boolean verifR=false;
+	boolean faute=false;
 	Boolean demandeDoubleCorrection = false;
 	@ManyToOne
 	@JoinColumn(name = "idEtudiant" ,insertable = false,updatable = false)

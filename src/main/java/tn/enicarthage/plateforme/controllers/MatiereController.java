@@ -37,7 +37,7 @@ public class MatiereController {
     public List<Matiere> getMatiere() {
         return serviceMatiere.getMatiere();
     }
-
+/*
     @GetMapping("/get-matiere-by-id/{id}")
     public ResponseEntity<Matiere> getMatiereById(@PathVariable("id") int id) {
         Matiere matiere= serviceMatiere.getMatiereById(id)
@@ -49,8 +49,8 @@ public class MatiereController {
     public Matiere addMatiere(@RequestBody Matiere p) {
         return serviceMatiere.addMatiere(p);
     }
-
-    @PutMapping("/update-matiere/{id}")
+*/
+   /* @PutMapping("/update-matiere/{id}")
     public ResponseEntity<?> updateMatiere(@RequestBody Matiere matiere, @PathVariable("id") Integer id) {
         if (serviceMatiere.existById(id)) {
             Matiere matiereToUpdate = serviceMatiere.getMatiereById(id)
@@ -70,8 +70,8 @@ public class MatiereController {
             message.put("message", "matiere with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
-    }
-
+    }*/
+/*
     @DeleteMapping("/delete-matiere/{id}")
     public ResponseEntity<?> deleteMatiere(@PathVariable("id") int id) {
 
@@ -83,7 +83,7 @@ public class MatiereController {
             return ResponseEntity.ok(response);
 
 
-        /*if (serviceMatiere.existById(id)) {
+        if (serviceMatiere.existById(id)) {
             serviceMatiere.removeMatiere(id);
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Matiere with id " + id + " deleted successfully.");
@@ -92,6 +92,6 @@ public class MatiereController {
             HashMap<String, String> message = new HashMap<>();
             message.put("message", "Matiere with id " + id + " not found or matched.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }*/
-    }
+        }
+    }*/
 }
