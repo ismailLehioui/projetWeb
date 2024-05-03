@@ -1,6 +1,7 @@
 package tn.enicarthage.plateforme.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,4 +24,8 @@ public class CopieController {
 		return serviceCopie.deposerDemandeDoubleCorrection(idCopie);
 	}
 	
+	@PostMapping("/corriger_copie/{nouvelleNote}")
+	public void corrigerCopie(@RequestBody CopieCP copieId, @PathVariable float nouvelleNote) {
+		serviceCopie.corrigerCopie(copieId, nouvelleNote);
+	}
 }

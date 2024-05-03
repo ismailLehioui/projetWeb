@@ -1,7 +1,6 @@
 package tn.enicarthage.plateforme.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -22,6 +21,10 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Matiere implements Serializable   {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int idMatiere;

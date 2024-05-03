@@ -1,12 +1,9 @@
 package tn.enicarthage.plateforme.services;
 
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import tn.enicarthage.plateforme.entities.Paquet;
-import tn.enicarthage.plateforme.entities.Salle;
 import tn.enicarthage.plateforme.repositories.PaquetRepository;
 
 import java.util.List;

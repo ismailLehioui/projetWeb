@@ -1,6 +1,5 @@
 package tn.enicarthage.plateforme.services;
 
-import tn.enicarthage.plateforme.entities.Paquet;
 import tn.enicarthage.plateforme.entities.Salle;
 
 import java.util.List;
